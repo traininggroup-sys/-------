@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>اختبار تدريبي - جروب المشتركين</title>
     <style>
+      /* تعديل حاوية الكويز لتكون في المنتصف */
+      #quiz {
+        max-width: 600px;
+        margin: 20px auto; /* توسيط أفقي */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* إلغاء التثبيت في الزاوية وجعله تحت الأسئلة */
+      #next-button {
+        display: block;
+        width: 100%; /* ليأخذ عرض الحاوية */
+        margin-top: 20px; /* مسافة بينه وبين الخيارات */
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        position: static; /* إلغاء الـ fixed القديم */
+      }
+
+      /* تحسين شكل الخيارات عند الاختيار */
+      input[type="radio"]:checked + label {
+        background-color: #e7f1ff !important;
+        border-color: #007bff !important;
+      }
       body {
         font-family: Arial, sans-serif;
         direction: rtl;
@@ -106,9 +137,6 @@
         font-weight: bold;
       }
       #next-button {
-        position: fixed;
-        left: 20px;
-        bottom: 20px;
         padding: 10px 30px;
         background-color: #007bff;
         color: white;
@@ -150,7 +178,7 @@
     </style>
   </head>
   <body>
-    <div class="header-box">
+    <div id="info-header" class="header-box">
       <h1>🎁 هدية القناة العامة</h1>
       <p>
         هذا الاختبار هو جزء من تدريبات <b>جروب المشتركين للتدريب</b> علي اختبار
@@ -352,7 +380,10 @@
         timeLeft = durationInput * 60;
         if (passwordInput === "7") {
           shuffle(questions);
+          // إخفاء الهيدر ومربع الدخول
+          document.getElementById("info-header").classList.add("hidden");
           document.getElementById("login-container").classList.add("hidden");
+          // إظهار الكويز
           document.getElementById("quiz").classList.remove("hidden");
           loadQuestion();
           startTimer();
@@ -395,15 +426,18 @@
 
       function showResults() {
         clearInterval(timer);
+        // إخفاء الكويز
         document.getElementById("quiz").classList.add("hidden");
+        // إظهار الهيدر مرة أخرى في صفحة النتيجة
+        document.getElementById("info-header").classList.remove("hidden");
+
         const res = document.getElementById("result");
         res.classList.remove("hidden");
         const percent = ((score / questions.length) * 100).toFixed(1);
 
-        // نظام الرسائل التفاعلية بناءً على النتيجة
         let feedbackText = "";
         if (percent >= 90) {
-          feedbackText = "🌟برافو نتيجتك حلوة جدا";
+          feedbackText = "🌟 برافو نتيجتك حلوة جدا";
         } else if (percent >= 75) {
           feedbackText = "👏 مش بطال عاش";
         } else if (percent >= 50) {
